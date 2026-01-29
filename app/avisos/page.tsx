@@ -15,6 +15,29 @@ type Aviso = {
 export default function AvisosPage() {
   const [avisos, setAvisos] = useState<Aviso[]>([]);
 
+  // ✅ FUNCIÓN FUERA
+  function cerrarAviso(id: number) {
+    const datos = localStorage.getItem("avisos");
+    if (!datos) return;
+
+    const parsed = JSON.parse(datos);
+
+    const actualizados = parsed.map((aviso: any) =>
+      aviso.id === id
+        ? { ...aviso, estado: "cerrado" }
+        : aviso
+    );
+
+    localStorage.setItem("avisos", JSON.stringify(actualizados));
+
+    const abiertos = actualizados.filter(
+      (aviso: any) => aviso.estado === "abierto"
+    );
+
+    setAvisos(abiertos);
+  }
+
+  // ✅ useEffect SOLO carga inicial
   useEffect(() => {
     const datos = localStorage.getItem("avisos");
     if (datos) {
@@ -25,6 +48,7 @@ export default function AvisosPage() {
       setAvisos(abiertos);
     }
   }, []);
+
 
   return (
     <main className="p-4 max-w-md mx-auto">
@@ -43,6 +67,13 @@ export default function AvisosPage() {
             <p><strong>Cliente:</strong> {aviso.cliente}</p>
             <p><strong>Máquina:</strong> {aviso.maquina || "-"}</p>
             <p><strong>Avería:</strong> {aviso.descripcion}</p>
+            <button
+  onClick={() => cerrarAviso(aviso.id)}
+  className="mt-2 bg-green-600 text-white px-3 py-1 rounded"
+>
+  Marcar como terminado
+</button>
+
           </li>
         ))}
       </ul>
