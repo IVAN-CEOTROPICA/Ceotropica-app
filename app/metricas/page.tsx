@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { Aviso } from "../types/Aviso";
 import Nav from "../components/Nav";
 
 type Aviso = {
