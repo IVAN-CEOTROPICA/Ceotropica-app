@@ -1,6 +1,7 @@
 "use client";
 console.log("PAGE CARGADA");
 import {useState} from "react";
+import Nav from "./components/Nav";
 export default function Home() {
 const [cliente, setCliente] = useState("");
 const [maquina, setMaquina] = useState("");
@@ -39,6 +40,7 @@ function guardarAviso() {
 
   return (
     <main className="p-4 max-w-md mx-auto">
+      <Nav />
       <h1 className="text-2xl font-bold mb-4">CEOTROPICA · SAT</h1>
 
       <input
