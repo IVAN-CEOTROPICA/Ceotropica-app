@@ -1,8 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Aviso } from "../types/Aviso";
 import Nav from "../components/Nav";
+import type { Aviso } from "../types/aviso";
 
 export default function MetricasPage() {
   const [avisos, setAvisos] = useState<Aviso[]>([]);
@@ -13,10 +13,8 @@ export default function MetricasPage() {
     setAvisos(JSON.parse(datos));
   }, []);
 
-  // Avisos cerrados
   const cerrados = avisos.filter(a => a.estado === "cerrado");
 
-  // Agrupar por cliente
   const porCliente: Record<string, number> = {};
   cerrados.forEach(a => {
     const cliente = a.cliente || "Sin cliente";
@@ -27,7 +25,6 @@ export default function MetricasPage() {
     (a, b) => b[1] - a[1]
   );
 
-  // Fechas
   const hoy = new Date();
   const inicioHoy = new Date(hoy.getFullYear(), hoy.getMonth(), hoy.getDate());
 
@@ -42,7 +39,6 @@ export default function MetricasPage() {
     a => a.fechaCierre && new Date(a.fechaCierre) >= inicioSemana
   );
 
-  // Tiempo medio de resolución (minutos)
   const tiempos = cerrados
     .filter(a => a.fechaCreacion && a.fechaCierre)
     .map(
@@ -64,22 +60,16 @@ export default function MetricasPage() {
 
       <h1 className="text-2xl font-bold mb-4">Métricas</h1>
 
-      <ul className="space-y-2 mb-6">
-        <li>
-          <strong>Total avisos cerrados:</strong> {cerrados.length}
-        </li>
-        <li>
-          <strong>Cerrados hoy:</strong> {cerradosHoy.length}
-        </li>
-        <li>
-          <strong>Cerrados esta semana:</strong> {cerradosSemana.length}
-        </li>
-        <li>
-          <strong>Tiempo medio de resolución:</strong> {tiempoMedio} min
-        </li>
+      <ul className="space-y-2">
+        <li><strong>Total avisos cerrados:</strong> {cerrados.length}</li>
+        <li><strong>Cerrados hoy:</strong> {cerradosHoy.length}</li>
+        <li><strong>Cerrados esta semana:</strong> {cerradosSemana.length}</li>
+        <li><strong>Tiempo medio resolución:</strong> {tiempoMedio} min</li>
       </ul>
 
-      <h2 className="text-xl font-bold mb-2">Avisos cerrados por cliente</h2>
+      <h2 className="text-xl font-bold mt-6 mb-2">
+        Avisos cerrados por cliente
+      </h2>
 
       {clientesOrdenados.length === 0 && <p>No hay avisos cerrados</p>}
 
@@ -93,4 +83,3 @@ export default function MetricasPage() {
     </main>
   );
 }
-
