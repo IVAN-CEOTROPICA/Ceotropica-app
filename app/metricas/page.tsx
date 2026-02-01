@@ -4,12 +4,6 @@ import { useEffect, useState } from "react";
 import { Aviso } from "../types/Aviso";
 import Nav from "../components/Nav";
 
-type Aviso = {
-  estado: string;
-  fechaCreacion?: string;
-  fechaCierre?: string;
-};
-
 export default function MetricasPage() {
   const [avisos, setAvisos] = useState<Aviso[]>([]);
 
@@ -19,10 +13,10 @@ export default function MetricasPage() {
     setAvisos(JSON.parse(datos));
   }, []);
 
-  const cerrados = avisos.filter(a => a.estado === "cerrado");
+  const cerrados = avisos.filter((a: Aviso) => a.estado === "cerrado");
   const porCliente: Record<string, number> = {};
 
-cerrados.forEach(a => {
+cerrados.forEach((a: Aviso) => {
   const cliente = a.cliente || "Sin cliente";
   porCliente[cliente] = (porCliente[cliente] || 0) + 1;
 });
